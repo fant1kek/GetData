@@ -1,14 +1,13 @@
-name: Update Car Database
+name: Update Vehicle Database
 
 on:
-  schedule:
-    - cron: '*/7 * * * *'
-  workflow_dispatch:
+  workflow_dispatch:        # Ручной запуск кнопкой
+  repository_dispatch:      # Запуск из другого приложения
+    types: [run_update]
 
 jobs:
   run-parser:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -27,3 +26,5 @@ jobs:
         env:
           MONGODB: ${{ secrets.MONGODB }}
           CARSAPI: ${{ secrets.CARSAPI }}
+          MOTOAPI: ${{ secrets.MOTOAPI }}
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true

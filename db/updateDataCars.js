@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Car = require('./carSchema');
 
-async function updateDataInDB(data) {
+async function updateDataCars(data) {
     if (!data || data.length === 0) return console.log('Нет данных');
 
     try {
@@ -10,7 +10,7 @@ async function updateDataInDB(data) {
         const operations = data.map(item => ({
             updateOne: {
                 filter: { id: item.id },
-               update: { 
+                update: { 
                     $set: { 
                         ...item, 
                         lastSeen: new Date() 
@@ -22,7 +22,7 @@ async function updateDataInDB(data) {
 
         const result = await Car.bulkWrite(operations);
         
-        console.log(`✅ Обработано: ${data.length} | Новых: ${result.upsertedCount} | Обновлено: ${result.modifiedCount}`);
+        console.log(`✅ Обработано машин: ${data.length} | Новых машин: ${result.upsertedCount} | Обновлено машин: ${result.modifiedCount}`);
         
     } catch (error) {
         console.error('❌ Ошибка:', error);
@@ -31,4 +31,4 @@ async function updateDataInDB(data) {
     }
 }
 
-module.exports = { updateDataInDB };
+module.exports = { updateDataCars };
