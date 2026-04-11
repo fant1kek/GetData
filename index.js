@@ -4,12 +4,23 @@ const { updateDataMoto } = require('./db/updateDataMoto');
 
 async function getNewCarsAndMoto() {
     try {
-        const ads = await getData(process.env.CARSAPI);
-        
+        let ads = await getData(process.env.CARSAPI);
         if (ads && ads.adverts && ads.adverts.length > 0) {
-            const adverts = ads.adverts;
+            let allAdverts = ads.adverts;
 
-            const data = adverts.map(advert => {
+            const lastCar = allAdverts[allAdverts.length - 1]; 
+            const renewedAt = new Date(lastCar.renewedAt);
+            const now = new Date();
+            const diffInMinutes = (now - renewedAt) / (1000 * 60);
+
+            if (diffInMinutes < 7) {
+                console.log('Прошло меньше 7 минут, подгружаем вторую страницу...');
+                const ads2 = await getData(process.env.CARSAPI2);
+                if (ads2 && ads2.adverts) {
+                    allAdverts = allAdverts.concat(ads2.adverts);
+                }
+            }
+            const data = allAdverts.map(advert => {
                 const props = advert.properties || [];
                 const getVal = (name) => props.find(p => p.name === name)?.value;
                 return {

@@ -1,3 +1,5 @@
+require('dotenv').config({ path: './config/.env' });
+
 async function getData(api) {
     try {
         const response = await fetch(api, {

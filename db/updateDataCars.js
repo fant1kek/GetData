@@ -11,19 +11,16 @@ async function updateDataCars(data) {
             updateOne: {
                 filter: { id: item.id },
                 update: { 
-                    $set: { 
+                    $setOnInsert: { 
                         ...item, 
-                        lastSeen: new Date() 
+                        createdAt: new Date() 
                     } 
                 },
                 upsert: true
             }
         }));
-
-        const result = await Car.bulkWrite(operations);
-        
-        console.log(`✅ Обработано машин: ${data.length} | Новых машин: ${result.upsertedCount} | Обновлено машин: ${result.modifiedCount}`);
-        
+        const result = await Car.bulkWrite(operations, { ordered: false });
+        console.log(`✅ Обработано: ${data.length} | Добавлено новых: ${result.upsertedCount} | Проигнорировано (уже были): ${data.length - result.upsertedCount}`);
     } catch (error) {
         console.error('❌ Ошибка:', error);
     } finally {
