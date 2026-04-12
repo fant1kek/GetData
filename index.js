@@ -13,8 +13,8 @@ async function getNewCarsAndMoto() {
             const now = new Date();
             const diffInMinutes = (now - renewedAt) / (1000 * 60);
 
-            if (diffInMinutes < 7) {
-                console.log('Прошло меньше 7 минут, подгружаем вторую страницу...');
+            if (diffInMinutes < 8) {
+                console.log('Прошло меньше 8 минут, подгружаем вторую страницу...');
                 const ads2 = await getData(process.env.CARSAPI2);
                 if (ads2 && ads2.adverts) {
                     allAdverts = allAdverts.concat(ads2.adverts);
