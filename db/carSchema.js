@@ -15,6 +15,7 @@ const carSchema = new mongoose.Schema({
     engineType: String,
     engineCapacity: String,
     transmission: String,
+    type: String,
     lastSeen: { 
         type: Date, 
         default: Date.now, 

@@ -12,6 +12,7 @@ const motoSchema = new mongoose.Schema({
     price: Number,
     engineType: String,
     engineCapacity: String,
+    type: String,
     lastSeen: { 
         type: Date, 
         default: Date.now, 

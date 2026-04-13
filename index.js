@@ -7,19 +7,17 @@ async function getNewCarsAndMoto() {
         let ads = await getData(process.env.CARSAPI);
         if (ads && ads.adverts && ads.adverts.length > 0) {
             let allAdverts = ads.adverts;
-
-            // const lastCar = allAdverts[allAdverts.length - 1]; 
-            // const renewedAt = new Date(lastCar.renewedAt);
-            // const now = new Date();
-            // const diffInMinutes = (now - renewedAt) / (1000 * 60);
-
-            // if (diffInMinutes < 8) {
-            //     console.log('Прошло меньше 8 минут, подгружаем вторую страницу...');
-            const ads2 = await getData(process.env.CARSAPI2);
-            if (ads2 && ads2.adverts) {
-                allAdverts = allAdverts.concat(ads2.adverts);
+            const hour = parseInt(new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/Moscow',
+                hour: 'numeric',
+                hour12: false
+            }).format(new Date()));
+            if(hour >= 8 && hour < 24) {
+                const ads2 = await getData(process.env.CARSAPI2);
+                if (ads2 && ads2.adverts) {
+                    allAdverts = allAdverts.concat(ads2.adverts);
+                }
             }
-            //}
             const data = allAdverts.map(advert => {
                 const props = advert.properties || [];
                 const getVal = (name) => props.find(p => p.name === name)?.value;
@@ -35,6 +33,7 @@ async function getNewCarsAndMoto() {
                     year: advert.metadata?.year,
                     city: advert.locationName,
                     price: advert.price?.usd?.amount,
+                    type: 'car',
                     engineType: getVal("engine_type"),
                     engineCapacity: getVal("engine_capacity"),
                     transmission: getVal("transmission_type")
@@ -68,6 +67,7 @@ async function getNewCarsAndMoto() {
                     year: advert.year,
                     city: advert.locationName,
                     price: advert.price?.usd?.amount,
+                    type: 'moto',
                     engineType: getVal("engine_type"),
                     engineCapacity: getVal("engine_capacity"),
                 };
