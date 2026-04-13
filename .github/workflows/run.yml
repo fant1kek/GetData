@@ -27,4 +27,5 @@ jobs:
           MONGODB: ${{ secrets.MONGODB }}
           CARSAPI: ${{ secrets.CARSAPI }}
           MOTOAPI: ${{ secrets.MOTOAPI }}
+          CARSAPI2: ${{ secrets.CARSAPI2 }}
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
