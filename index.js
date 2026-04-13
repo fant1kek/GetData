@@ -12,7 +12,9 @@ async function getNewCarsAndMoto() {
                 hour: 'numeric',
                 hour12: false
             }).format(new Date()));
+            console.log(`time: ${hour}, api1: ${process.env.CARSAPI} api2: process.env.CARSAPI2`)
             if(hour >= 8 && hour < 24) {
+                console.log('a');
                 const ads2 = await getData(process.env.CARSAPI2);
                 if (ads2 && ads2.adverts) {
                     allAdverts = allAdverts.concat(ads2.adverts);
